@@ -302,6 +302,8 @@ def export_dir_folders_fn(export_dir_path, sub_dir_list):
     pg_tile_status_dir = (export_dir_path + '\\pg_tile_status')
     os.mkdir(pg_tile_status_dir)
 
+    dp0_tile_status_dir = (export_dir_path + '\\dp0_tile_status')
+    os.mkdir(dp0_tile_status_dir)
     # ----------------------------------------------------------------------
 
     fpc_tile_for_processing_dir = (fpc_tile_status_dir + '\\fpc_for_processing')
@@ -315,6 +317,9 @@ def export_dir_folders_fn(export_dir_path, sub_dir_list):
 
     pg_tile_for_processing_dir = (pg_tile_status_dir + '\\pg_for_processing')
     os.mkdir(pg_tile_for_processing_dir)
+
+    dp0_tile_for_processing_dir = (dp0_tile_status_dir + '\\dp0_for_processing')
+    os.mkdir(dp0_tile_for_processing_dir)
 
     # -----------------------------------------------------------------------
 
@@ -330,6 +335,9 @@ def export_dir_folders_fn(export_dir_path, sub_dir_list):
     pg_insuf_files_dir = (pg_tile_status_dir + '\\pg_insufficient_files')
     os.mkdir(pg_insuf_files_dir)
 
+    dp0_insuf_files_dir = (dp0_tile_status_dir + '\\dp0_insufficient_files')
+    os.mkdir(dp0_insuf_files_dir)
+
     # ------------------------------------------------------------------------
 
     fpc_stat_list_dir = fpc_tile_status_dir + '\\fpc_tile_status_lists'
@@ -343,6 +351,9 @@ def export_dir_folders_fn(export_dir_path, sub_dir_list):
 
     pg_stat_list_dir = pg_tile_status_dir + '\\pg_tile_status_lists'
     os.mkdir(pg_stat_list_dir)
+
+    dp0_stat_list_dir = dp0_tile_status_dir + '\\dp0_tile_status_lists'
+    os.mkdir(dp0_stat_list_dir)
 
     # -------------------------------------------------------------------------
 
@@ -587,7 +598,6 @@ def main_routine():
         fpc_output_zonal_stats, fpc_complete_tile, fpc_tile, fpc_temp_dir_bands = step1_6_fpc_zonal_stats.main_routine(
             temp_dir_path, zonal_stats_ready_dir, no_data, tile, fpc_zonal_stats_output)
 
-
     # -------------------------------------------------- Landsat FPC dp0m ----------------------------------------------
 
     # call the step1_5_fpc_landsat_list.py script.
@@ -601,7 +611,7 @@ def main_routine():
     print('-' * 50)
 
     dp0_zonal_stats_output = (export_dir_path + '\\dp0_zonal_stats')
-    #print('dp0 zonal_stats_output: ', dp0_zonal_stats_output)
+    # print('dp0 zonal_stats_output: ', dp0_zonal_stats_output)
     dp0_list_zonal_tile = []
 
     for file in glob.glob(dp0_tile_for_processing_dir + '\\*.csv'):
@@ -617,9 +627,6 @@ def main_routine():
         import step1_6_dp0_zonal_stats
         fpc_output_zonal_stats, fpc_complete_tile, fpc_tile, fpc_temp_dir_bands = step1_6_dp0_zonal_stats.main_routine(
             temp_dir_path, zonal_stats_ready_dir, no_data, tile, dp0_zonal_stats_output)
-
-
-
 
     # ------------------------------------------------ Landsat Reflectance ---------------------------------------------
     # call the step1_5_reflectance_landsat_list.py script.
