@@ -370,6 +370,30 @@ def export_dir_folders_fn(export_dir_path, sub_dir_list):
     pg_zonal_stats_output_dir = (export_dir_path + '\\pg_zonal_stats')
     os.mkdir(pg_zonal_stats_output_dir)
 
+    h99a2_zonal_stats_output_dir = (export_dir_path + '\\h99a2_zonal_stats')
+    os.mkdir(h99a2_zonal_stats_output_dir)
+
+    fpca2_zonal_stats_output_dir = (export_dir_path + '\\fpca2_zonal_stats')
+    os.mkdir(fpca2_zonal_stats_output_dir)
+
+    dp0_zonal_stats_output_dir = (export_dir_path + '\\dp0_zonal_stats')
+    os.mkdir(dp0_zonal_stats_output_dir)
+
+    dbi_zonal_stats_output_dir = (export_dir_path + '\\dbi_zonal_stats')
+    os.mkdir(dbi_zonal_stats_output_dir)
+
+    dim_zonal_stats_output_dir = (export_dir_path + '\\dim_zonal_stats')
+    os.mkdir(dim_zonal_stats_output_dir)
+
+    dis_zonal_stats_output_dir = (export_dir_path + '\\dis_zonal_stats')
+    os.mkdir(dis_zonal_stats_output_dir)
+
+    dja_zonal_stats_output_dir = (export_dir_path + '\\dja_zonal_stats')
+    os.mkdir(dja_zonal_stats_output_dir)
+
+    dka_zonal_stats_output_dir = (export_dir_path + '\\dka_zonal_stats')
+    os.mkdir(dka_zonal_stats_output_dir)
+
     return fpc_tile_status_dir, ref_tile_status_dir
 
 
@@ -448,17 +472,79 @@ def main_routine():
 
         sub_dir_list_csv.append(export_csv)
 
+    # ----------------------------------------------------- h99 --------------------------------------------------------
+
     tree_height_dir = r"Z:\Landsat\mosaics\structural_formation\h99_mos"
 
     import step1_2_list_of_tree_height_images
     th_export_csv = step1_2_list_of_tree_height_images.main_routine(
         export_dir_path, tree_height_dir, 'th', "*h99a*.img")
 
+    # ---------------------------------------------- persistent green --------------------------------------------------
+
     pg_dir = r"Z:\Landsat\mosaics\persistent_green"
 
     import step1_2_list_of_tree_height_images
     pg_export_csv = step1_2_list_of_tree_height_images.main_routine(
         export_dir_path, pg_dir, 'pg', "*djaa*.tiff")
+
+    # ---------------------------------------------------- h99 ---------------------------------------------------------
+
+    h99a2_dir = r"G:\structural_formation\h99_mos"
+
+    import step1_2_list_of_h99a2_images
+    h99a2_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, h99a2_dir, 'h99a2', "*h99a2*.img")
+
+    # ---------------------------------------------------- fpca --------------------------------------------------------
+
+    fpca2_dir = r"G:\structural_formation\h99_mos"
+
+    import step1_2_list_of_fpca2_images
+    fpca2_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, fpca2_dir, 'fpca2', "*fpca2*.img")
+
+    # ---------------------------------------------------- dbi --------------------------------------------------------
+
+    dbi_dir = r"G:\seasonal_composites\dbi"
+
+    import step1_2_list_of_fpca2_images
+    dbi_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, dbi_dir, 'dbi', "*dbi*.tif")
+
+    # ---------------------------------------------------- dim --------------------------------------------------------
+
+    dim_dir = r"G:\seasonal_composites\dim"
+
+    import step1_2_list_of_fpca2_images
+    dim_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, dim_dir, 'dim', "*dim*.tif")
+
+    # ---------------------------------------------------- dis --------------------------------------------------------
+
+    dis_dir = r"G:\seasonal_composites\dis"
+
+    import step1_2_list_of_fpca2_images
+    dis_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, dis_dir, 'dis', "*dis*.tif")
+
+    # ---------------------------------------------------- dja --------------------------------------------------------
+
+    dja_dir = r"G:\seasonal_composites\dja"
+
+    import step1_2_list_of_fpca2_images
+    dja_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, dja_dir, 'dja', "*dja*.tif")
+
+    # ---------------------------------------------------- dka --------------------------------------------------------
+
+    dka_dir = r"G:\seasonal_composites\dka"
+
+    import step1_2_list_of_fpca2_images
+    dka_export_csv = step1_2_list_of_tree_height_images.main_routine(
+        export_dir_path, dka_dir, 'dka', "*dka*.tif")
+
+    # ==================================================================================================================
 
     import step1_3_collate_odk_apply_1ha_buffer
     geo_df_52, crs_name_52, geo_df_53, crs_name_53 = step1_3_collate_odk_apply_1ha_buffer.main_routine(
@@ -467,10 +553,11 @@ def main_routine():
     print("geo_df52: ", geo_df_52)
     print("geo_df53: ", geo_df_53)
 
-
     import step1_4_landsat_tile_grid_identify
     comp_geo_df52, comp_geo_df53, zonal_stats_ready_dir = step1_4_landsat_tile_grid_identify.main_routine(
         tile_grid, geo_df_52, geo_df_53, prime_temp_grid_dir)
+
+    # -------------------------------------------------- Landsat FPC ---------------------------------------------------
 
     # call the step1_5_fpc_landsat_list.py script.
     import step1_5_fpc_landsat_list
@@ -483,7 +570,7 @@ def main_routine():
     print('-' * 50)
 
     fpc_zonal_stats_output = (export_dir_path + '\\fpc_zonal_stats')
-    #print('FPC zonal_stats_output: ', fpc_zonal_stats_output)
+    # print('FPC zonal_stats_output: ', fpc_zonal_stats_output)
     fpc_list_zonal_tile = []
 
     for file in glob.glob(fpc_tile_for_processing_dir + '\\*.csv'):
@@ -494,12 +581,47 @@ def main_routine():
     print(fpc_list_zonal_tile)
 
     for tile in fpc_list_zonal_tile:
-        #print("tile: ", tile)
+        # print("tile: ", tile)
         # call the step1_6_fpc_zonal_stats.py script.
         import step1_6_fpc_zonal_stats
         fpc_output_zonal_stats, fpc_complete_tile, fpc_tile, fpc_temp_dir_bands = step1_6_fpc_zonal_stats.main_routine(
             temp_dir_path, zonal_stats_ready_dir, no_data, tile, fpc_zonal_stats_output)
 
+
+    # -------------------------------------------------- Landsat FPC dp0m ----------------------------------------------
+
+    # call the step1_5_fpc_landsat_list.py script.
+    import step1_5_fpc_landsat_list
+    list_sufficient, geo_df = step1_5_fpc_landsat_list.main_routine(
+        export_dir_path, comp_geo_df52, comp_geo_df53, fc_count, landsat_dir, image_search_criteria1,
+        image_search_criteria2)
+
+    # define the tile for processing directory.
+    dp0_tile_for_processing_dir = (fpc_tile_status_dir + '\\dp0_for_processing')
+    print('-' * 50)
+
+    dp0_zonal_stats_output = (export_dir_path + '\\dp0_zonal_stats')
+    #print('dp0 zonal_stats_output: ', dp0_zonal_stats_output)
+    dp0_list_zonal_tile = []
+
+    for file in glob.glob(dp0_tile_for_processing_dir + '\\*.csv'):
+        # print(file)
+        # append tile paths to list.
+        dp0_list_zonal_tile.append(file)
+
+    print(dp0_list_zonal_tile)
+
+    for tile in dp0_list_zonal_tile:
+        # print("tile: ", tile)
+        # call the step1_6_fpc_zonal_stats.py script.
+        import step1_6_dp0_zonal_stats
+        fpc_output_zonal_stats, fpc_complete_tile, fpc_tile, fpc_temp_dir_bands = step1_6_dp0_zonal_stats.main_routine(
+            temp_dir_path, zonal_stats_ready_dir, no_data, tile, dp0_zonal_stats_output)
+
+
+
+
+    # ------------------------------------------------ Landsat Reflectance ---------------------------------------------
     # call the step1_5_reflectance_landsat_list.py script.
     import step1_5_reflectance_landsat_list
     list_sufficient, geo_df = step1_5_reflectance_landsat_list.main_routine(
@@ -511,27 +633,29 @@ def main_routine():
     print('-' * 50)
 
     ref_zonal_stats_output = (export_dir_path + '\\ref_zonal_stats')
-    #print('zonal_stats_output: ', ref_zonal_stats_output)
+    # print('zonal_stats_output: ', ref_zonal_stats_output)
     ref_list_zonal_tile = []
 
     for file in glob.glob(ref_tile_for_processing_dir + '\\*.csv'):
-        #print(file)
+        # print(file)
         # append tile paths to list.
         ref_list_zonal_tile.append(file)
-    #print("ref_list_zonal_tile: ", ref_list_zonal_tile)
+    # print("ref_list_zonal_tile: ", ref_list_zonal_tile)
     for tile in ref_list_zonal_tile:
         # call the step1_9_reflectance_zonal_stats.py script.
         import step1_9_reflectance_zonal_stats_working
         ref_output_zonal_stats, ref_complete_tile, ref_tile, ref_temp_dir_bands = \
             step1_9_reflectance_zonal_stats_working.main_routine(
-            temp_dir_path, zonal_stats_ready_dir, 32767, tile, ref_zonal_stats_output)
+                temp_dir_path, zonal_stats_ready_dir, 32767, tile, ref_zonal_stats_output)
+
+    # --------------------------------------------- Monthly Rainfall ---------------------------------------------------
 
     print('=' * 50)
     print("monthly rainfall")
 
     # clean up geodatframe, keep one record of each site and reset index
     geo_df2 = geo_df.drop_duplicates(subset=["site_name"], keep="first")
-    #geo_df2 = geo_df
+    # geo_df2 = geo_df
     geo_df2.reset_index(drop=True, inplace=True)
     geo_df2['uid'] = geo_df2.index + 1
 
@@ -545,6 +669,7 @@ def main_routine():
         step1_8_qld_grid_zonal_stats.main_routine(
             export_dir_path, zonal_stats_ready_dir, i, csv_file, temp_dir_path, qld_dict, geo_df2)
 
+    # -------------------------------------------- Tree height ---------------------------------------------------------
     height_zonal_stats_output = (export_dir_path + '\\th_zonal_stats')
     print('height zonal_stats_output: ', height_zonal_stats_output)
     # no data for tree height is 0
@@ -554,16 +679,103 @@ def main_routine():
     projected_shape_path = step1_9_seasonal_tree_height_zonal_stats.main_routine(
         export_dir_path, 'th', th_export_csv, temp_dir_path, geo_df2, temp_dir_path, no_data)
 
+    # ---------------------------------------------- Persistent Green --------------------------------------------------
+
     pg_zonal_stats_output = (export_dir_path + '\\pg_zonal_stats')
     print('pg zonal_stats_output: ', pg_zonal_stats_output)
 
     # no data for persistent green is 0
     no_data = 0
 
-    import step1_9_seasonal_wfpc_zonal_stats
-    step1_9_seasonal_wfpc_zonal_stats.main_routine(
+    import step1_9_seasonal_pg_zonal_stats
+    step1_9_seasonal_pg_zonal_stats.main_routine(
         export_dir_path, 'pg', pg_export_csv, temp_dir_path, projected_shape_path, no_data)
 
+    # ------------------------------------------------ h99a2 -----------------------------------------------------------
+
+    h99a2_zonal_stats_output = (export_dir_path + '\\h99a2_zonal_stats')
+    print('h99a2 zonal_stats_output: ', h99a2_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_10_seasonal_h99a2_zonal_stats
+    step1_10_seasonal_h99a2_zonal_stats.main_routine(
+        export_dir_path, 'h99a2', h99a2_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ------------------------------------------------ fpca2 -----------------------------------------------------------
+
+    fpca2_zonal_stats_output = (export_dir_path + '\\fpca2_zonal_stats')
+    print('fpca2 zonal_stats_output: ', fpca2_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_11_seasonal_fpca2_zonal_stats
+    step1_11_seasonal_fpca2_zonal_stats.main_routine(
+        export_dir_path, 'fpca2', fpca2_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ------------------------------------------------ dbi -----------------------------------------------------------
+
+    dbi_zonal_stats_output = (export_dir_path + '\\dbi_zonal_stats')
+    print('dbi zonal_stats_output: ', dbi_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_12_seasonal_dbi_zonal_stats
+    step1_12_seasonal_dbi_zonal_stats.main_routine(
+        export_dir_path, 'dbi', dbi_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ------------------------------------------------ dim -----------------------------------------------------------
+
+    dim_zonal_stats_output = (export_dir_path + '\\dim_zonal_stats')
+    print('dim zonal_stats_output: ', dim_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_13_seasonal_dim_zonal_stats
+    step1_13_seasonal_dim_zonal_stats.main_routine(
+        export_dir_path, 'dim', dim_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ------------------------------------------------ dis -----------------------------------------------------------
+
+    dis_zonal_stats_output = (export_dir_path + '\\dis_zonal_stats')
+    print('dis zonal_stats_output: ', dis_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_14_seasonal_dis_zonal_stats
+    step1_14_seasonal_dis_zonal_stats.main_routine(
+        export_dir_path, 'dis', dis_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ------------------------------------------------ dja -----------------------------------------------------------
+
+    dja_zonal_stats_output = (export_dir_path + '\\dja_zonal_stats')
+    print('dja zonal_stats_output: ', dja_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_15_seasonal_dja_zonal_stats
+    step1_15_seasonal_dja_zonal_stats.main_routine(
+        export_dir_path, 'dja', dja_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ------------------------------------------------ dka -----------------------------------------------------------
+
+    dka_zonal_stats_output = (export_dir_path + '\\dka_zonal_stats')
+    print('dka zonal_stats_output: ', dka_zonal_stats_output)
+
+    # no data for persistent green is 0
+    no_data = 0
+
+    import step1_16_seasonal_dka_zonal_stats
+    step1_16_seasonal_dka_zonal_stats.main_routine(
+        export_dir_path, 'dka', dka_export_csv, temp_dir_path, projected_shape_path, no_data)
+
+    # ---------------------------------------------------- Clean up ----------------------------------------------------
 
     shutil.rmtree(temp_dir_path)
     print('Temporary directory and its contents has been deleted from your working drive.')

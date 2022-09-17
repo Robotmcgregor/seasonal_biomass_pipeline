@@ -69,7 +69,7 @@ def project_shapefile_gcs_wgs84_fn(albers, geo_df):
     # read in shp as a geoDataFrame.
     #df = gpd.read_file(zonal_stats_ready_dir + '\\' + complete_tile + '_by_tile.shp')
 
-    # project to GCSWGS84
+    # project to Australian Albers
     cgs_df = geo_df.to_crs(epsg=3577)
 
     # define crs file/path name variable.
@@ -99,7 +99,7 @@ def apply_zonal_stats_fn(image_s, projected_shape_path, uid, variable, no_data):
     zone_stats_list = []
     site_id_list = []
     image_name_list = []
-    # print("Working on variabele: ", variable)
+    # print("Working on variable: ", variable)
     # print(qld_dict)
     # variable_values = qld_dict.get(variable)
 
