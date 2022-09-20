@@ -87,7 +87,7 @@ def os_walk_odk_fn(directory_odk):
         for file in files:
             print('file: ', file)
 
-            if file.endswith('site_totals_final.csv'):
+            if file.endswith('c_bio_site_totals_v4_edit.csv'):
                 # Separate integrated/Tier 1 outputs
                 #site_name = extract_site_fn(file)
                 csv_file = (os.path.join(root, file))

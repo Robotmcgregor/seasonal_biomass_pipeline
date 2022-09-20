@@ -196,7 +196,7 @@ def apply_zonal_stats_fn(image_s, projected_shape_path, uid, variable, no_data):
     return final_results
 
 
-def clean_data_frame_fn(output_list, output_dir, var_, ):
+def clean_data_frame_fn(output_list, output_dir, var_):
     """ Create dataframe from output list, clean and export dataframe to a csv to export directory/max_temp sub-directory.
 
     @param output_list: list object created by appending the final results list elements.
@@ -236,7 +236,7 @@ def clean_data_frame_fn(output_list, output_dir, var_, ):
     return output_max_temp
 
 
-def main_routine(export_dir_path, variable, csv_file, temp_dir_path, geo_df, albers_dir, no_data):
+def main_routine(export_dir_path, variable, csv_file, temp_dir_path, geo_df, no_data):
     """ Calculate the zonal statistics for each 1ha site per QLD monthly max_temp image (single band).
     Concatenate and clean final output DataFrame and export to the Export directory/zonal stats.
 
@@ -256,6 +256,7 @@ def main_routine(export_dir_path, variable, csv_file, temp_dir_path, geo_df, alb
     print("variable: ", variable)
 
     albers_dir = os.path.join(temp_dir_path, "albers")
+    print("albers Dir: ", albers_dir )
 
     # # define the GCSWGS84 directory pathway
     # gcs_wgs84_dir = (temp_dir_path + '\\gcs_wgs84')
@@ -271,7 +272,7 @@ def main_routine(export_dir_path, variable, csv_file, temp_dir_path, geo_df, alb
 
         # loop through the list of imagery and input the image into the raster zonal_stats function
         for image in imagery_list:
-            # print('image: ', image)
+            print('image: ', image)
 
             image_s = image.rstrip()
             print("image_s: ", image_s)

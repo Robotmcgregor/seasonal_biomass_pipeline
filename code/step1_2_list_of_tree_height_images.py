@@ -85,13 +85,13 @@ def output_csv_fn(list_image, export_dir_path, variable):
 
 def main_routine(export_dir_path, variable_dir, variable, search_item):
 
-
+    print("initiate step 1 2 list of tree height images")
     # # os walk
     # year_dir_list = next(os.walk(variable_dir))[1]
     # #print(year_dir_list)
 
     list_image = list_dir_fn(variable_dir, search_item)
-    # print(list_image)
+    print(list_image)
 
     # call the output_csv_fn function to return a csv containing each file paths stored in the list_image variable
     # (1 path per line).
