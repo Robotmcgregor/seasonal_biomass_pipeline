@@ -233,58 +233,54 @@ def clean_data_frame_fn(output_list, output_dir, var_, ):
         # export the pandas df to a csv file
         output_max_temp.to_csv(out_path, index=False)
 
-    return output_max_temp
-
 
 def main_routine(export_dir_path, variable, csv_file, temp_dir_path, geo_df, no_data):
-    """ Calculate the zonal statistics for each 1ha site per QLD monthly max_temp image (single band).
-    Concatenate and clean final output DataFrame and export to the Export directory/zonal stats.
+    """ This script will calculate the zonal statistics for each 1ha site per for seasonal canopy height Landsat data
+    (single band image). All zonal stats data will be concatenated into a single clean dataframe and output as a csv in
+    the primary directory 'export dir path'.
 
-    export_dir_path, zonal_stats_ready_dir, fpc_output_zonal_stats, fpc_complete_tile, i, csv_file, temp_dir_path, qld_dict"""
-
-    # tree_height_dir = r"Z:\Landsat\mosaics\structural_formation\h99_mos"
-    # image_list = []
-    # for image in glob(os.path.join(tree_height_dir, "*h99a*.img")):
-    #     print("tree height: ", image)
-    #     image.list.extend(image)
+    @param export_dir_path: string object containing the path to the output directory.
+    @param variable: string object containing raster code.
+    @param csv_file: string object containing the path to a list of files csv 'paths to each raster that overlays site
+    shapefile'
+    @param temp_dir_path: string object to the temporary directory which will store zonal stat
+    output csv, per band pear image.
+    @param geo_df: geo-dataframe containing 1ha site polygons.
+    @param no_data: integer object containing the no data value for the specific raster
+    """
 
     print("Seasonal Tree height beginning.........")
-    print("no_data: ", no_data, " - should be 0")
+    print("no_data: ", no_data)
 
     uid = 'uid'
     output_list = []
-    print("variable: ", variable)
 
+    # define albers directory path containing 1ha site shapefile
     albers_dir = os.path.join(temp_dir_path, "albers")
 
-    # # define the GCSWGS84 directory pathway
-    # gcs_wgs84_dir = (temp_dir_path + '\\gcs_wgs84')
-    #
-    # define the max_tempOutput directory pathway
+    # define the output directory pathway
     output_dir = (os.path.join(export_dir_path, "{0}_zonal_stats".format(variable)))
 
-    # call the project_shapefile_gcs_wgs84_fn function
+    # call the project_shapefile_fn function to project geo-dataframe to raster projection
     cgs_df, projected_shape_path = project_shapefile_gcs_wgs84_fn(albers_dir, geo_df)
 
-    # open the list of imagery and read it into memory and call the apply_zonal_stats_fn function
+    # open the list of imagery and read to memory -  also call the apply_zonal_stats_fn function
     with open(csv_file, 'r') as imagery_list:
 
         # loop through the list of imagery and input the image into the raster zonal_stats function
         for image in imagery_list:
-            # print('image: ', image)
 
             image_s = image.rstrip()
             print("image_s: ", image_s)
 
-            final_results = apply_zonal_stats_fn(image_s, projected_shape_path, uid, variable, no_data)  # cgs_df,projected_shape_path,
+            # call zonal stats function to extract zonal statistics for each 1ha site of the geo-dataframe.
+            final_results = apply_zonal_stats_fn(image_s, projected_shape_path, uid, variable, no_data)
 
             for i in final_results:
                 output_list.append(i)
 
-    # call the clean_data_frame_fn function
-    clean_output_temp = clean_data_frame_fn(output_list, output_dir, variable)
-
-    return projected_shape_path
+    # call the clean_data_frame_fn function to change headers and output data
+    clean_data_frame_fn(output_list, output_dir, variable)
 
 
 if __name__ == "__main__":
